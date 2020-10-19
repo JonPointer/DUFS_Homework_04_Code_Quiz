@@ -238,5 +238,7 @@ submitInitials.addEventListener("click", function (event) {
     displayHighScores();
     // And save the high scores to local storage
     localStorage.setItem("scores", JSON.stringify(highScores));
+    // Hide the form again for entering initials
+    highScoreForm.setAttribute("class", "d-none");
 });
 
