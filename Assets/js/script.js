@@ -1,5 +1,6 @@
 // Variables
 
+// DOM Elements 
 var startButton = document.getElementById("startButton");
 var highScoreForm = document.getElementById("highScoreForm");
 var submitInitials = document.getElementById("submitInitials");
@@ -20,6 +21,7 @@ var userThree = document.getElementById("userThree");
 var userFour = document.getElementById("userFour");
 var userFive = document.getElementById("userFive");
 
+// Quiz questions object
 var questions = {
     1: {
         picture: "http://oldcomputers.net/pics/Altair_8800.jpg",
@@ -93,6 +95,7 @@ var questions = {
     }
 }
 
+// Quiz variables
 var currentQuestion = 1;
 var timer = 0;
 var tmpTimer = 0;
@@ -101,12 +104,12 @@ var answerSelected = 0;
 var atEnd = 0;
 var score = 0;
 var newScorePosition = 0;
-
 var highScores = [];
 var tmpScores = localStorage.getItem("scores");
 
 // Functions
 
+// Display the high scores to the screen
 function displayHighScores() {
     userOne.textContent = highScores[0] + ": " + highScores[1];
     userTwo.textContent = highScores[2] + ": " + highScores[3];
@@ -115,29 +118,31 @@ function displayHighScores() {
     userFive.textContent = highScores[8] + ": " + highScores[9];
 }
 
+// Check the user's answer against the questions object
 function checkAnswerAndAdvance(passCurrentQuestion, answerNumber) {
     var questionAnswer = questions[passCurrentQuestion].correctAnswer;
     if (answerNumber === questionAnswer) {
         // Correct answer, move to the next question
         currentQuestion += 1;
-        // displayQuestion(currentQuestion);
         alert("Correct! Press Enter to continue.");
     } else {
         // Incorrect answer, subtract 10 from the clock and go to the next question
         alert("Incorrect! 10 seconds will be deducted.  Press Enter to continue.");
         timer -= 10;
         currentQuestion += 1;
-        // displayQuestion(currentQuestion);
     }
     if (currentQuestion <= 10) {
+        // Haven't reached the end, so display the next question.
         displayQuestion(currentQuestion);
     } else {
+        // End of questions
         atEnd = 1;
         endSequence();
     }
 
 }
 
+// End sequence for reporting results and checking high score
 function endSequence() {
     // Capture timer value at end
     tmpTimer = timer;
@@ -156,6 +161,7 @@ function endSequence() {
 
 }
 
+// Function to display each question in the questions object.
 function displayQuestion(number) {
     // Change the picture
     questionImage.setAttribute("src", questions[number].picture);
@@ -168,40 +174,44 @@ function displayQuestion(number) {
     answerThree.childNodes[1].textContent = " " + questions[number].answers[2];
 }
 
+// Program initialization
 
-// Read in high scores and set all to zero if first time.
+// Read in high scores and set all to zero if first time using program.
 if (tmpScores === null) {
     for (i = 0; i < 10; i += 2) {
         highScores[i] = "TBD";
         highScores[i + 1] = 0;
     }
+    // This was first time, so save new array of TBD,0 to local storage
     localStorage.setItem("scores", JSON.stringify(highScores));
 } else {
+    // High scores already existed in local storage, so read into program variable
     highScores = JSON.parse(tmpScores);
 }
 
 // Now display high scores on screen
 displayHighScores();
 
+// Initialization complete.  Now listen for buttons.
+
 // Event listeners
 
+// For each answer button - trigger to check the answer and continue to the next question.
 answerOneButton.addEventListener("click", function () {
-
     checkAnswerAndAdvance(currentQuestion, 0);
 })
 
 answerTwoButton.addEventListener("click", function () {
-
     checkAnswerAndAdvance(currentQuestion, 1);
 })
 
 answerThreeButton.addEventListener("click", function () {
-
     checkAnswerAndAdvance(currentQuestion, 2);
 })
 
+// For the start button
 startButton.addEventListener("click", function () {
-    // Hide the high score input form and reset variables
+    // Hide the high score input form, reset variables, and display the first question.
     highScoreForm.setAttribute("class", "d-none");
     userInitials.value = "";
     currentQuestion = 1;
@@ -211,15 +221,19 @@ startButton.addEventListener("click", function () {
     atEnd = 0;
     timer = 1000;
     displayQuestion(currentQuestion);
+    // Start timer
     var timerInterval = setInterval(function () {
         if (atEnd === 0) {
+            // Not at the end of the quiz, so keep counting down
             timer -= 1;
             counterField.textContent = timer;
         } else {
+            // At the end, so set the timer to zero and display the final time in the counter
             timer = 0;
             counterField.textContent = tmpTimer;
         }
         if (timer === 0) {
+            // Timer is done, so reset.
             clearInterval(timerInterval);
             return;
         }
