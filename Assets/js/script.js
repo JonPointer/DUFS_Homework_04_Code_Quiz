@@ -11,7 +11,9 @@ var questionText = document.getElementById("questionText");
 var answerOne = document.getElementById("answerOne");
 var answerOneButton = document.getElementById("answerOneButton");
 var answerTwo = document.getElementById("answerTwo");
+var answerTwoButton = document.getElementById("answerTwoButton");
 var answerThree = document.getElementById("answerThree");
+var answerThreeButton = document.getElementById("answerThreeButton");
 
 var questions = {
     1: {
@@ -86,13 +88,49 @@ var questions = {
     }
 }
 
-
+var currentQuestion = 1;
 var timer = 0;
+var tmpTimer = 0;
 var initials = "";
 var answerSelected = 0;
-var answered = false;
+var atEnd = 0;
+var score = 0;
+
+var highScores = [];
+var tmpScores = localStorage.getItem("scores");
 
 // Functions
+
+function checkAnswerAndAdvance(passCurrentQuestion, answerNumber) {
+    var questionAnswer = questions[passCurrentQuestion].correctAnswer;
+    if (answerNumber === questionAnswer) {
+        // Correct answer, move to the next question
+        currentQuestion += 1;
+        // displayQuestion(currentQuestion);
+        alert("Correct! Press Enter to continue.");
+    } else {
+        // Incorrect answer, subtract 10 from the clock and go to the next question
+        alert("Incorrect! 10 seconds will be deducted.  Press Enter to continue.");
+        timer -= 10;
+        currentQuestion += 1;
+        // displayQuestion(currentQuestion);
+    }
+    if (currentQuestion <= 10) {
+        displayQuestion(currentQuestion);
+    } else {
+        atEnd = 1;
+        endSequence();
+    }
+
+}
+
+function endSequence() {
+    tmpTimer = timer;
+    counterField.textContent = tmpTimer;
+    score = tmpTimer;
+    alert("Complete! Your score was " + score);
+
+}
 
 function displayQuestion(number) {
     // Change the picture
@@ -101,22 +139,60 @@ function displayQuestion(number) {
     questionNumber.innerHTML = questions[number].heading;
     questionText.innerHTML = questions[number].text;
     // Change the text for each answer
-    answerOne.textContent = questions[number].answers[0];
-    answerTwo.textContent = questions[number].answers[1];
-    answerThree.innerHTML = questions[number].answers[2];
+    answerOne.childNodes[1].textContent = " " + questions[number].answers[0];
+    answerTwo.childNodes[1].textContent = " " + questions[number].answers[1];
+    answerThree.childNodes[1].textContent = " " + questions[number].answers[2];
 }
 
+
+// Read in high scores and set all to zero if first time.
+if (tmpScores === null) {
+    console.log("scores was empty");
+    for (i = 0; i < 10; i += 2) {
+        highScores[i] = "TBD";
+        highScores[i + 1] = 0;
+    }
+    localStorage.setItem("scores", JSON.stringify(highScores));
+} else {
+    highScores = JSON.parse(tmpScores);
+}
+
+// Now display high scores on screen
+
+
+// Event listeners
+
 answerOneButton.addEventListener("click", function () {
-    answered = true;
-    console.log(answered);
+
+    checkAnswerAndAdvance(currentQuestion, 0);
+})
+
+answerTwoButton.addEventListener("click", function () {
+
+    checkAnswerAndAdvance(currentQuestion, 1);
+})
+
+answerThreeButton.addEventListener("click", function () {
+
+    checkAnswerAndAdvance(currentQuestion, 2);
 })
 
 startButton.addEventListener("click", function () {
+    currentQuestion = 1;
+    tmpTimer = 0;
+    initials = "";
+    answerSelected = 0;
+    atEnd = 0;
     timer = 1000;
+    displayQuestion(currentQuestion);
     var timerInterval = setInterval(function () {
-        timer -= 1;
-        displayQuestion(1);
-        counterField.textContent = timer;
+        if (atEnd === 0) {
+            timer -= 1;
+            counterField.textContent = timer;
+        } else {
+            timer = 0;
+            counterField.textContent = tmpTimer;
+        }
         if (timer === 0) {
             clearInterval(timerInterval);
             return;
@@ -124,21 +200,6 @@ startButton.addEventListener("click", function () {
     }, 1000);
 }
 );
-
-// Next, an event to loop the game
-// startButton.addEventListener("click", function (event) {
-// displayQuestion(1);
-// for (i = 1; i <= 10; i++) {
-// Display the question
-// displayQuestion(i);
-// while (!answered) {
-//     console.log("Waiting for answer");
-// }
-// }
-
-// }
-// );
-
 
 
 submitInitials.addEventListener("click", function (event) {
