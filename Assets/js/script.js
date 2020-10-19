@@ -4,6 +4,14 @@ var startButton = document.getElementById("startButton");
 var highScoreForm = document.getElementById("highScoreForm");
 var submitInitials = document.getElementById("submitInitials");
 var userInitials = document.getElementById("userInitials");
+var counterField = document.getElementById("counter");
+var questionImage = document.getElementById("questionImage");
+var questionNumber = document.getElementById("questionNumber");
+var questionText = document.getElementById("questionText");
+var answerOne = document.getElementById("answerOne");
+var answerOneButton = document.getElementById("answerOneButton");
+var answerTwo = document.getElementById("answerTwo");
+var answerThree = document.getElementById("answerThree");
 
 var questions = {
     1: {
@@ -78,15 +86,60 @@ var questions = {
     }
 }
 
+
 var timer = 0;
 var initials = "";
+var answerSelected = 0;
+var answered = false;
 
 // Functions
 
-startButton.addEventListener("click", function (event) {
-    // Start the quiz
+function displayQuestion(number) {
+    // Change the picture
+    questionImage.setAttribute("src", questions[number].picture);
+    // Change the heading and text
+    questionNumber.innerHTML = questions[number].heading;
+    questionText.innerHTML = questions[number].text;
+    // Change the text for each answer
+    answerOne.textContent = questions[number].answers[0];
+    answerTwo.textContent = questions[number].answers[1];
+    answerThree.innerHTML = questions[number].answers[2];
+}
 
-});
+answerOneButton.addEventListener("click", function () {
+    answered = true;
+    console.log(answered);
+})
+
+startButton.addEventListener("click", function () {
+    timer = 1000;
+    var timerInterval = setInterval(function () {
+        timer -= 1;
+        displayQuestion(1);
+        counterField.textContent = timer;
+        if (timer === 0) {
+            clearInterval(timerInterval);
+            return;
+        }
+    }, 1000);
+}
+);
+
+// Next, an event to loop the game
+// startButton.addEventListener("click", function (event) {
+// displayQuestion(1);
+// for (i = 1; i <= 10; i++) {
+// Display the question
+// displayQuestion(i);
+// while (!answered) {
+//     console.log("Waiting for answer");
+// }
+// }
+
+// }
+// );
+
+
 
 submitInitials.addEventListener("click", function (event) {
     event.preventDefault();

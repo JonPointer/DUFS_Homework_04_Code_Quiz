@@ -26,7 +26,7 @@
                 <h2>Retro Computer Quiz</h2>
                 <!-- Start button and badge that will contain the timer counter  -->
                 <button type="button" class="btn btn-success btn-lg mb-2" id="startButton">Start Quiz <span
-                        class="badge badge-light" id="counter">Counter</span></button>
+                        class="badge badge-light" id="counter">1000</span></button>
 
                 <h6>All images and data are from <a href="http://oldcomputers.net/" target="_blank">Steve's Old Computer
                         Museum</a>. Thanks for a great site, Steve!</h6>
@@ -42,11 +42,15 @@
                     <img id="questionImage" src="http://oldcomputers.net/pics/trs80-i.jpg" class="card-img-top"
                         alt="image-text">
                     <div class="card-body">
-                        <h5 id="questionNumber" class="card-title">Question #</h5>
-                        <p id="questionText" class="card-text">Click Start Quiz to begin questions...</p>
+                        <h5 id="questionNumber" class="card-title text-primary font-weight-bold">Questions...</h5>
+                        <h6 id="questionText" class="card-text font-weight-bold">Click Start Quiz above to begin the
+                            quiz. Your score will
+                            be
+                            the time remaining on the timer at the end. Wrong answers take 10 seconds off the timer.
+                        </h6>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li id="answerOne" class="list-group-item"><button type="button"
+                        <li id="answerOne" class="list-group-item"><button id="answerOneButton" type="button"
                                 class="btn btn-primary btn-sm">1</button>
                             ---</li>
                         <li id="answerTwo" class="list-group-item"><button type="button"
@@ -65,8 +69,8 @@
                     <img src="https://images.pexels.com/photos/1293269/pexels-photo-1293269.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
                         class="card-img-top" alt="High Scores">
                     <div class="card-body">
-                        <h5 class="card-title">High Scores</h5>
-                        <p class="card-text">Top 5 High Scores</p>
+                        <h5 class="card-title text-primary font-weight-bold">High Scores</h5>
+                        <h6 class="card-text font-weight-bold">Top 5 High Scores</h6>
                     </div>
                     <ul class="list-group list-group-flush">
                         <li id="userOne" class="list-group-item">---</li>
