@@ -128,9 +128,9 @@ function checkAnswerAndAdvance(passCurrentQuestion, answerNumber) {
             currentQuestion += 1;
             alert("Correct! Click OK or press Enter to continue.");
         } else {
-            // Incorrect answer, subtract 10 from the clock and go to the next question
-            alert("Incorrect! 10 seconds will be deducted.  Click OK or press Enter to continue.");
-            timer -= 10;
+            // Incorrect answer, subtract 50 from the clock and go to the next question
+            alert("Incorrect! 50 seconds will be deducted.  Click OK or press Enter to continue.");
+            timer -= 50;
             currentQuestion += 1;
         }
         if (currentQuestion <= 10) {

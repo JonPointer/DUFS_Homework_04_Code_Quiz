@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this assignment we were to create a quiz with a timer utilizing Bootstrap and vanilla Javascript. Each wrong answer would remove 10 from the timer and the end score would be the remaining time on the timer. In addition, high scores were to be displayed and stored in local storage and the user prompted if they qualified for a high score.
+In this assignment we were to create a quiz with a timer utilizing Bootstrap and vanilla Javascript. Each wrong answer would remove 50 from the timer and the end score would be the remaining time on the timer. In addition, high scores were to be displayed and stored in local storage and the user prompted if they qualified for a high score.
 
 ## Approach
 
