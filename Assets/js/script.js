@@ -126,10 +126,10 @@ function checkAnswerAndAdvance(passCurrentQuestion, answerNumber) {
         if (answerNumber === questionAnswer) {
             // Correct answer, move to the next question
             currentQuestion += 1;
-            alert("Correct! Press Enter to continue.");
+            alert("Correct! Click OK or press Enter to continue.");
         } else {
             // Incorrect answer, subtract 10 from the clock and go to the next question
-            alert("Incorrect! 10 seconds will be deducted.  Press Enter to continue.");
+            alert("Incorrect! 10 seconds will be deducted.  Click OK or press Enter to continue.");
             timer -= 10;
             currentQuestion += 1;
         }
@@ -234,11 +234,12 @@ startButton.addEventListener("click", function () {
             timer -= 1;
             counterField.textContent = timer;
         } else {
-            // At the end, so set the timer to zero and display the final time in the counter
-            timer = 0;
+            // At the end, so clear the timer interval and display the final time in the counter
+            active = 0;
+            clearInterval(timerInterval);
             counterField.textContent = tmpTimer;
         }
-        if (timer <= 0) {
+        if (timer <= 0 && atEnd === 0) {
             // Timer is done, so reset.
             clearInterval(timerInterval);
             timer = 0;
