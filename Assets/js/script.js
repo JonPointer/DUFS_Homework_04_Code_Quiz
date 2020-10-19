@@ -14,6 +14,11 @@ var answerTwo = document.getElementById("answerTwo");
 var answerTwoButton = document.getElementById("answerTwoButton");
 var answerThree = document.getElementById("answerThree");
 var answerThreeButton = document.getElementById("answerThreeButton");
+var userOne = document.getElementById("userOne");
+var userTwo = document.getElementById("userTwo");
+var userThree = document.getElementById("userThree");
+var userFour = document.getElementById("userFour");
+var userFive = document.getElementById("userFive");
 
 var questions = {
     1: {
@@ -95,11 +100,20 @@ var initials = "";
 var answerSelected = 0;
 var atEnd = 0;
 var score = 0;
+var newScorePosition = 0;
 
 var highScores = [];
 var tmpScores = localStorage.getItem("scores");
 
 // Functions
+
+function displayHighScores() {
+    userOne.textContent = highScores[0] + ": " + highScores[1];
+    userTwo.textContent = highScores[2] + ": " + highScores[3];
+    userThree.textContent = highScores[4] + ": " + highScores[5];
+    userFour.textContent = highScores[6] + ": " + highScores[7];
+    userFive.textContent = highScores[8] + ": " + highScores[9];
+}
 
 function checkAnswerAndAdvance(passCurrentQuestion, answerNumber) {
     var questionAnswer = questions[passCurrentQuestion].correctAnswer;
@@ -125,10 +139,20 @@ function checkAnswerAndAdvance(passCurrentQuestion, answerNumber) {
 }
 
 function endSequence() {
+    // Capture timer value at end
     tmpTimer = timer;
     counterField.textContent = tmpTimer;
     score = tmpTimer;
     alert("Complete! Your score was " + score);
+    // Check to see if score is a high score
+    for (i = 0; i < 10; i += 2) {
+        if (score > highScores[i + 1]) {
+            alert("You have a high score! Enter your initials below.");
+            newScorePosition = i;
+            highScoreForm.setAttribute("class", "d-block");
+            break;
+        }
+    }
 
 }
 
@@ -147,7 +171,6 @@ function displayQuestion(number) {
 
 // Read in high scores and set all to zero if first time.
 if (tmpScores === null) {
-    console.log("scores was empty");
     for (i = 0; i < 10; i += 2) {
         highScores[i] = "TBD";
         highScores[i + 1] = 0;
@@ -158,7 +181,7 @@ if (tmpScores === null) {
 }
 
 // Now display high scores on screen
-
+displayHighScores();
 
 // Event listeners
 
@@ -178,6 +201,9 @@ answerThreeButton.addEventListener("click", function () {
 })
 
 startButton.addEventListener("click", function () {
+    // Hide the high score input form and reset variables
+    highScoreForm.setAttribute("class", "d-none");
+    userInitials.value = "";
     currentQuestion = 1;
     tmpTimer = 0;
     initials = "";
@@ -204,10 +230,13 @@ startButton.addEventListener("click", function () {
 
 submitInitials.addEventListener("click", function (event) {
     event.preventDefault();
-    console.log("Initials Entered: " + userInitials.value);
+    // Add user to high scores array at proper position
+    highScores.splice(newScorePosition, 0, userInitials.value, score);
+    // Now there are 6 users in the array, so remove the last one
+    highScores.splice(10, 2);
+    // Now rebuild the high scores table
+    displayHighScores();
+    // And save the high scores to local storage
+    localStorage.setItem("scores", JSON.stringify(highScores));
 });
 
-// If the user gets a high score:
-// highScoreForm.setAttribute("class", "d-block")
-// And then afterwards:
-// highScoreForm.setAttribute("class", "d-none")
