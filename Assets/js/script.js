@@ -120,30 +120,34 @@ function displayHighScores() {
 
 // Check the user's answer against the questions object
 function checkAnswerAndAdvance(passCurrentQuestion, answerNumber) {
-    var questionAnswer = questions[passCurrentQuestion].correctAnswer;
-    if (answerNumber === questionAnswer) {
-        // Correct answer, move to the next question
-        currentQuestion += 1;
-        alert("Correct! Press Enter to continue.");
-    } else {
-        // Incorrect answer, subtract 10 from the clock and go to the next question
-        alert("Incorrect! 10 seconds will be deducted.  Press Enter to continue.");
-        timer -= 10;
-        currentQuestion += 1;
+    // Only check if the game is active
+    if (active) {
+        var questionAnswer = questions[passCurrentQuestion].correctAnswer;
+        if (answerNumber === questionAnswer) {
+            // Correct answer, move to the next question
+            currentQuestion += 1;
+            alert("Correct! Press Enter to continue.");
+        } else {
+            // Incorrect answer, subtract 10 from the clock and go to the next question
+            alert("Incorrect! 10 seconds will be deducted.  Press Enter to continue.");
+            timer -= 10;
+            currentQuestion += 1;
+        }
+        if (currentQuestion <= 10) {
+            // Haven't reached the end, so display the next question.
+            displayQuestion(currentQuestion);
+        } else {
+            // End of questions
+            atEnd = 1;
+            endSequence();
+        }
     }
-    if (currentQuestion <= 10) {
-        // Haven't reached the end, so display the next question.
-        displayQuestion(currentQuestion);
-    } else {
-        // End of questions
-        atEnd = 1;
-        endSequence();
-    }
-
 }
 
 // End sequence for reporting results and checking high score
 function endSequence() {
+    // Deactivate game
+    active = 0;
     // Capture timer value at end
     tmpTimer = timer;
     counterField.textContent = tmpTimer;
@@ -214,6 +218,8 @@ startButton.addEventListener("click", function () {
     // Hide the high score input form, reset variables, and display the first question.
     highScoreForm.setAttribute("class", "d-none");
     userInitials.value = "";
+    // Activate the game
+    active = 1;
     currentQuestion = 1;
     tmpTimer = 0;
     initials = "";
@@ -232,9 +238,13 @@ startButton.addEventListener("click", function () {
             timer = 0;
             counterField.textContent = tmpTimer;
         }
-        if (timer === 0) {
+        if (timer <= 0) {
             // Timer is done, so reset.
             clearInterval(timerInterval);
+            timer = 0;
+            counterField.textContent = timer;
+            active = 0;
+            alert("Game Over! You ran out of time.")
             return;
         }
     }, 1000);
