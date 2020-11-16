@@ -21,11 +21,11 @@ The quiz works well, catches errors, and resets for a new game.
 
 ### Path to GitHub Repository
 
-<https://github.com/JonPointer/DUFS_Homework_04_Code_Quiz>
+<https://github.com/JonPointer/Retro_Computer_Quiz>
 
 ### Path to GitHub Hosted Application
 
-<https://jonpointer.github.io/DUFS_Homework_04_Code_Quiz/>
+<https://jonpointer.github.io/Retro_Computer_Quiz/>
 
 ### Screenshot of the completed application
 
